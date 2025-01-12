@@ -1,5 +1,4 @@
-# Custom Clustering Score: My Cool Metric  
-**Redundancy & Missing** (for picking one item per cluster)
+# Redundancy & Missing Score (RMS) - A Novel Clustering Score
 
 ## Overview  
 This module defines a custom metric to evaluate clustering results under the specific scenario where we ultimately pick exactly one representative item from each predicted cluster.
