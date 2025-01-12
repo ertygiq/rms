@@ -197,8 +197,8 @@ print(res)
 
 # swapped the places. Moral here is that score is differnt depending on who is ground truth labels
 # This is correct: (np.float64(1.0285714285714285), np.float64(0.028571428571428574), np.float64(1.114285714285714))
-pl = [10,2,2,2,2,2,3,3,3,3,3,3,3,4,4,4,4]
 tl = [1,1,2,2,2,2,2,2,2,2,2,2,5,5,5,5,5]
+pl = [10,2,2,2,2,2,3,3,3,3,3,3,3,4,4,4,4]
 res = my_cool_metric(tl, pl)
 print(res)
 

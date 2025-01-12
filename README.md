@@ -79,7 +79,7 @@ Output:
 
 ### Example 4: Indifference to Label Names  
 `tl = [10, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 4, 4, 4, 4]`  
-`pl = [1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3]`  
+`pl = [1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 5, 5, 5, 5, 5]`  
 `res = my_cool_metric(tl, pl)`  
 `print(res)`
 
@@ -87,8 +87,8 @@ Output:
 `4.28`
 
 ### Example 5: Effect of Swapping Ground Truth and Predicted Labels  
-`pl = [10, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 4, 4, 4, 4]`  
 `tl = [1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 5, 5, 5, 5, 5]`  
+`pl = [10, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 4, 4, 4, 4]`  
 `res = my_cool_metric(tl, pl)`  
 `print(res)`  
 
