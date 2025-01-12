@@ -58,7 +58,6 @@ Unlike standard metrics (Rand Index, Purity, NMI, etc.), this custom metric is d
 
 Output:  
 `2.0`
----
 
 ### Example 2: Exact Match  
 `tl = [1, 2, 3, 4, 5]`  
@@ -68,7 +67,6 @@ Output:
 
 Output:  
 `0.0`
----
 
 ### Example 3: Larger Clusters  
 `tl = [1, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 4, 4, 4, 4]`  
@@ -78,7 +76,6 @@ Output:
 
 Output:  
 `4.28`
----
 
 ### Example 4: Indifference to Label Names  
 `tl = [10, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 4, 4, 4, 4]`  
@@ -88,7 +85,6 @@ Output:
 
 Output:  
 `4.28`
----
 
 ### Example 5: Effect of Swapping Ground Truth and Predicted Labels  
 `pl = [10, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 4, 4, 4, 4]`  
