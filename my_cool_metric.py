@@ -71,6 +71,7 @@ Below is the actual code implementing the logic described.
 
 import math
 import numpy as np
+import pandas as pd
 
 
 # Calculates number of pr_cl labels in the t_cl. To make it quicly
@@ -116,16 +117,22 @@ def get_expectations(possibilities):
     return redundant_exp, prob_all_zeros
 
 
+def prepare_lbs(lbs):
+    # lbs can be Seried, np array or list
+    res = pd.Series(lbs).fillna(-1).astype(int).values
+    if -1 in res:
+        res = unclust_to_seq_clusters(res)
+    return np.array(res)
+
 # 0 - is ideal
 # The bigger the number - the worse
 def my_cool_metric(true_lbs, pred_lbs, losing_weight=3):
     if len(true_lbs) != len(pred_lbs):
         raise Exception('Lists must be of the same size')
-    for lbs in [true_lbs, pred_lbs]:
-        if None in lbs or -1 in lbs:
-            raise Exception('There must be no unclustered labels')
+    true_lbs = prepare_lbs(true_lbs)
+    pred_lbs = prepare_lbs(pred_lbs)
     # Todo replace -1 labels
-    zipped = zip(true_lbs, pred_lbs)
+    zipped = list(zip(true_lbs, pred_lbs))
 
     # NEVER EVER do this. This will break zipped object
     # list(zipped)
@@ -177,6 +184,17 @@ def my_cool_metric(true_lbs, pred_lbs, losing_weight=3):
     return score
 
 
+# Conversts unclustered labels (-1) to sequential clusters labels: max, max+1, ...
+def unclust_to_seq_clusters(labels):
+    arr = np.array(labels.copy())
+    max_val = arr.max()
+    # Find all indices where the value is -1
+    neg_ones = np.where(arr == -1)[0]
+    # Replace each -1 with sequential values starting from max_val + 1
+    arr[neg_ones] = np.arange(max_val + 1, max_val + 1 + len(neg_ones))
+    return arr
+
+
 # Some example
 tl = [1, 1, 2, 2, 3, 3]
 pl = [2, 1, 3, 2, 3, 4]
@@ -203,7 +221,7 @@ res = my_cool_metric(tl, pl)
 print(res)
 
 # Exact match
-tl = [1,2,3,4,5]
-pl = [7,8,9,10, 14]
+tl = [1,2,3,4,5, None]
+pl = [7,8,9,10, 14, -1]
 res = my_cool_metric(tl, pl)
 print(res)
