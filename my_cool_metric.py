@@ -152,13 +152,21 @@ def my_cool_metric(true_lbs, pred_lbs, losing_weight=3):
     processed_pr_cls = []
     curr_cl_possibilities = []
     for i, (t_cl, pr_cl) in enumerate(zipped):
+        #print(t_cl, pr_cl)
         # initial value
         if curr_t_cl is None:
             curr_t_cl = t_cl
 
         if t_cl != curr_t_cl:
+            # expcts = get_expectations(curr_cl_possibilities)
+            # if sum(expcts) > 0:
+            #     print(curr_t_cl, get_expectations(curr_cl_possibilities))
+            #
             # new true cluster started
-            expectations_per_cluster.append(get_expectations(curr_cl_possibilities))
+            single_cl_expcts = get_expectations(curr_cl_possibilities)
+            # if single_cl_expcts[1] > 0:
+            #     print(curr_t_cl, single_cl_expcts)
+            expectations_per_cluster.append(single_cl_expcts)
             processed_pr_cls = []
             curr_cl_possibilities = []
             curr_t_cl = t_cl
@@ -179,6 +187,8 @@ def my_cool_metric(true_lbs, pred_lbs, losing_weight=3):
     expectations_per_cluster.append(get_expectations(curr_cl_possibilities))
     expectations_per_cluster = np.array(expectations_per_cluster)
     redund_exp, missing_exp = expectations_per_cluster.sum(axis=0)
+    # print()
+    # print(redund_exp, missing_exp)
     score = redund_exp + losing_weight * missing_exp
     # print((redund_exp, missing_exp, score)) # for debug
     return score
@@ -199,29 +209,29 @@ def unclust_to_seq_clusters(labels):
 tl = [1, 1, 2, 2, 3, 3]
 pl = [2, 1, 3, 2, 3, 4]
 res = my_cool_metric(tl, pl)
-print(res)
+assert(res == 2)
 
 # Correct is (np.float64(0.3200000000000001), np.float64(1.32), np.float64(4.28))
 tl = [1,2,2,2,2,2,3,3,3,3,3,3,3,4,4,4,4]
 pl = [1,1,2,2,2,2,2,2,2,2,2,2,3,3,3,3,3]
 res = my_cool_metric(tl, pl)
-print(res)
+assert (res == 4.28)
 
 # same as above. Shows it's indifferent to label names
 tl = [10,2,2,2,2,2,3,3,3,3,3,3,3,4,4,4,4]
 pl = [1,1,2,2,2,2,2,2,2,2,2,2,5,5,5,5,5]
 res = my_cool_metric(tl, pl)
-print(res)
+assert (res == 4.28)
 
 # swapped the places. Moral here is that score is differnt depending on who is ground truth labels
 # This is correct: (np.float64(1.0285714285714285), np.float64(0.028571428571428574), np.float64(1.114285714285714))
 tl = [1,1,2,2,2,2,2,2,2,2,2,2,5,5,5,5,5]
 pl = [10,2,2,2,2,2,3,3,3,3,3,3,3,4,4,4,4]
 res = my_cool_metric(tl, pl)
-print(res)
+assert(abs(res - 1.1142857) < 1e-7)
 
 # Exact match
 tl = [1,2,3,4,5, None]
 pl = [7,8,9,10, 14, -1]
 res = my_cool_metric(tl, pl)
-print(res)
+assert (res == 0)
