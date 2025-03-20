@@ -124,9 +124,10 @@ def prepare_lbs(lbs):
         res = unclust_to_seq_clusters(res)
     return np.array(res)
 
+
 # 0 - is ideal
 # The bigger the number - the worse
-def my_cool_metric(true_lbs, pred_lbs, losing_weight=3):
+def my_cool_metric(true_lbs, pred_lbs, losing_weight=3, extended_output=False):
     if len(true_lbs) != len(pred_lbs):
         raise Exception('Lists must be of the same size')
     true_lbs = prepare_lbs(true_lbs)
@@ -191,7 +192,10 @@ def my_cool_metric(true_lbs, pred_lbs, losing_weight=3):
     # print(redund_exp, missing_exp)
     score = redund_exp + losing_weight * missing_exp
     # print((redund_exp, missing_exp, score)) # for debug
-    return score
+    output = score
+    if extended_output:
+        output = (score, redund_exp, missing_exp)
+    return output
 
 
 # Conversts unclustered labels (-1) to sequential clusters labels: max, max+1, ...
